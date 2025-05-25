@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
@@ -13,16 +13,16 @@ const Footer = () => {
           <div className="col-md-4 mb-3">
             <h5>Quick Links</h5>
             <ul className="list-unstyled">
-              <li><a href="/" className="text-light text-decoration-none">Home</a></li>
-              <li><a href="/products" className="text-light text-decoration-none">Products</a></li>
-              <li><a href="/contact" className="text-light text-decoration-none">Contact</a></li>
+              <li><Link to="/" className="text-light text-decoration-none">Home</Link></li>
+              <li><Link to="/products" className="text-light text-decoration-none">Products</Link></li>
+              <li><Link to="/return-policy" className="text-light text-decoration-none">Return Policy</Link></li>
             </ul>
           </div>
           <div className="col-md-4 mb-3">
             <h5>Contact Info</h5>
             <ul className="list-unstyled">
               <li>Email: info@sportaccessories.com</li>
-              <li>Phone: (123) 456-7890</li>
+              <li>Phone: +91 8105238129</li>
             </ul>
           </div>
         </div>
