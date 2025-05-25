@@ -1,24 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Cart = () => {
-  const cartItems = [
-    {
-      id: 1,
-      name: "Professional Basketball",
-      price: 29.99,
-      quantity: 1,
-      image: "/images/basketball.jpg"
-    },
-    {
-      id: 3,
-      name: "Tennis Racket",
-      price: 89.99,
-      quantity: 1,
-      image: "/images/tennis-racket.jpg"
-    }
-  ];
-
+const Cart = ({ cartItems, updateQuantity, removeFromCart }) => {
   const calculateTotal = () => {
     return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
   };
@@ -44,10 +27,25 @@ const Cart = () => {
                     <h5 className="card-title">{item.name}</h5>
                     <p className="card-text">Price: ${item.price}</p>
                     <div className="d-flex align-items-center">
-                      <button className="btn btn-sm btn-secondary me-2">-</button>
+                      <button 
+                        className="btn btn-sm btn-secondary me-2"
+                        onClick={() => updateQuantity(item.id, -1)}
+                      >
+                        -
+                      </button>
                       <span>{item.quantity}</span>
-                      <button className="btn btn-sm btn-secondary ms-2">+</button>
-                      <button className="btn btn-sm btn-danger ms-3">Remove</button>
+                      <button 
+                        className="btn btn-sm btn-secondary ms-2"
+                        onClick={() => updateQuantity(item.id, 1)}
+                      >
+                        +
+                      </button>
+                      <button 
+                        className="btn btn-sm btn-danger ms-3"
+                        onClick={() => removeFromCart(item.id)}
+                      >
+                        Remove
+                      </button>
                     </div>
                   </div>
                 </div>

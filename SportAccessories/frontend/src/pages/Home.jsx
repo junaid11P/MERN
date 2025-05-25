@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
-const Home = () => {
+const Home = ({ addToCart }) => {
   const [textScale, setTextScale] = useState(0.3);
   const [textVisible, setTextVisible] = useState(true);
   const [imgScale, setImgScale] = useState(2);
@@ -176,7 +176,12 @@ const Home = () => {
                   <h5 className="card-title">{product.name}</h5>
                   <p className="card-text">${product.price}</p>
                   <div className="d-flex justify-content-between align-items-center">
-                    <button className="btn btn-primary btn-sm">Add to Cart</button>
+                    <button 
+                      className="btn btn-primary btn-sm"
+                      onClick={() => addToCart(product)}
+                    >
+                      Add to Cart
+                    </button>
                     <Link to={`/products`} className="btn btn-outline-secondary btn-sm">
                       Details
                     </Link>
