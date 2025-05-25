@@ -9,13 +9,15 @@ const Home = ({ addToCart }) => {
 
   const [secondImgScale, setSecondImgScale] = useState(1.5);
   const [secondCaptionVisible, setSecondCaptionVisible] = useState(false);
-  const [showSecondText, setShowSecondText] = useState(false);
+
+  const [middleTextVisible, setMiddleTextVisible] = useState(false);
 
   const imgRef1 = useRef();
   const captionRef1 = useRef();
   const imgRef2 = useRef();
   const captionRef2 = useRef();
-  const productListRef = useRef(); // Ref for the product list
+  const productListRef = useRef();
+  const middleTextRef = useRef();
 
   const featuredProducts = [
     {
@@ -61,7 +63,6 @@ const Home = ({ addToCart }) => {
       const scrollTop = window.scrollY || window.pageYOffset;
       const windowHeight = window.innerHeight;
 
-      // Welcome Text Animation
       const imgRect1 = imgRef1.current?.getBoundingClientRect();
       const scaleRange = 500;
       const newTextScale = scrollTop < scaleRange
@@ -70,34 +71,23 @@ const Home = ({ addToCart }) => {
       setTextScale(newTextScale);
       setTextVisible(imgRect1?.top > 300);
 
-      // First Image Zoom Out
       const imgVisible = Math.min(Math.max(windowHeight - imgRect1?.top, 0), windowHeight);
       const newImgScale = 1 + ((windowHeight - imgVisible) / windowHeight);
       setImgScale(Math.min(Math.max(newImgScale, 1), 2));
 
-      // First Caption
       const captionTop = captionRef1.current?.getBoundingClientRect().top || 0;
       setCaptionVisible(captionTop < windowHeight * 0.8);
 
-      // Second Image Zoom Out
       const imgRect2 = imgRef2.current?.getBoundingClientRect();
       const secondImgVisible = Math.min(Math.max(windowHeight - imgRect2?.top, 0), windowHeight);
       const newSecondImgScale = 1 + ((windowHeight - secondImgVisible) / windowHeight);
       setSecondImgScale(Math.min(Math.max(newSecondImgScale, 1), 1.5));
 
-      // Second Caption
       const captionTop2 = captionRef2.current?.getBoundingClientRect().top || 0;
       setSecondCaptionVisible(captionTop2 < windowHeight * 1.0);
 
-      // Show/hide second text based on scroll position
-      const showSecondTextScrollStart = 2400;
-      const showSecondTextScrollEnd = 2900;
-
-      if (scrollTop > showSecondTextScrollStart && scrollTop < showSecondTextScrollEnd) {
-        setShowSecondText(true);
-      } else {
-        setShowSecondText(false);
-      }
+      const middleTextTop = middleTextRef.current?.getBoundingClientRect().top || 0;
+      setMiddleTextVisible(middleTextTop < windowHeight * 0.8);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -221,26 +211,25 @@ const Home = ({ addToCart }) => {
         </div>
       </div>
 
-      {/* Text 2 */}
-      <h1
+      {/* Middle Text */}
+      <div
+        ref={middleTextRef}
         style={{
-          position: 'fixed',
-          top: '80%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          transition: 'opacity 1s ease',
-          opacity: showSecondText ? 1 : 0,
-          fontWeight: 600,
-          color: '#111',
-          zIndex: 998,
-          pointerEvents: 'none',
+          textAlign: 'center',
+          marginTop: '4vh',
+          opacity: middleTextVisible ? 1 : 0,
+          transform: `translateY(${middleTextVisible ? '0px' : '30px'})`,
+          transition: 'opacity 1s ease, transform 1s ease',
+          fontSize: '1.5rem',
+          fontWeight: 'bold',
+          color: '#222',
         }}
       >
         Shop Smarter. Play Harder.
-      </h1>
+      </div>
 
       {/* Image 2 */}
-      <div className="d-flex justify-content-center" style={{ marginTop: '60vh', zIndex: 10 }}>
+      <div className="d-flex justify-content-center" style={{ marginTop: '20vh', zIndex: 10 }}>
         <img
           ref={imgRef2}
           src="/home2.jpg"
