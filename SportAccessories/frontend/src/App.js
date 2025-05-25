@@ -10,11 +10,16 @@ const App = () => {
   return (
     <Router>
       <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/Login" element={<Login />} />
-        <Route path="/Legister" element={<Register />} />
-      </Routes>
+      <Home />
+      
+      {/* Define your routes here */}
+      <div className="container">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/Login" element={<Login />} />
+          <Route path="/Register" element={<Register />} />
+        </Routes>
+      </div>
     </Router>
   );
 };

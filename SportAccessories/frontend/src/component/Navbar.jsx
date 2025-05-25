@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 
+
 const Navbar = () => {
   return (
     <div>
@@ -33,16 +34,16 @@ const Navbar = () => {
             {/* Login Icon on the right */}
             <ul className="navbar-nav mb-2 mb-lg-0">
               <li className="nav-item">
-                <a className="nav-link" href="/Login.jsx" title="Login">
+                <a className="nav-link" href="/pages/Login.jsx" title="Login">
                   <i className="bi bi-person" style={{ fontSize: '1.5rem' }}></i><br />
-    <small>Login</small>
+    <small>Login </small>
                 </a>
               </li>
             </ul>
             {/* Cart Icon on the right */}
             <ul className="navbar-nav mb-2 mb-lg-0">
               <li className="nav-item">
-                <a className="nav-link" href="/Cart.jsx" title="Cart">
+                <a className="nav-link" href="/pages/Cart.jsx" title="Cart">
                   <i className="bi bi-cart4" style={{ fontSize: '1.5rem' }}></i><br />
     <small>Cart</small>
                 </a>
