@@ -11,6 +11,7 @@ import Cart from './pages/Cart';
 
 const App = () => {
   const [cartItems, setCartItems] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const addToCart = (product) => {
     setCartItems(prevItems => {
@@ -43,11 +44,19 @@ const App = () => {
   return (
     <Router>
       <div className="d-flex flex-column min-vh-100">
-        <Navbar cartItemCount={cartItems.length} />
+        <Navbar onSearch={setSearchQuery} />
         <main className="flex-grow-1">
           <Routes>
             <Route path="/" element={<Home addToCart={addToCart} />} />
-            <Route path="/products" element={<Products addToCart={addToCart} />} />
+            <Route 
+              path="/products" 
+              element={
+                <Products 
+                  addToCart={addToCart} 
+                  searchQuery={searchQuery}
+                />
+              } 
+            />
             <Route path="/cart" element={
               <Cart 
                 cartItems={cartItems}

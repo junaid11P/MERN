@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 
-const Products = ({ addToCart }) => {
+const Products = ({ addToCart, searchQuery }) => {
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  
   const products = [
     {
       id: 1,
@@ -47,24 +49,47 @@ const Products = ({ addToCart }) => {
     }
   ];
 
+  useEffect(() => {
+    if (searchQuery) {
+      const filtered = products.filter(product => 
+        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.description.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setFilteredProducts(filtered);
+    } else {
+      setFilteredProducts(products);
+    }
+  }, [searchQuery]);
+
   return (
     <div className="container my-5">
       <h2 className="text-center mb-4">Our Products</h2>
-      <div className="row g-4">
-        {products.map((product) => (
-          <div key={product.id} className="col-md-4">
-            <div className="card h-100">
-              <img src={product.image} className="card-img-top" alt={product.name} />
-              <div className="card-body">
-                <h5 className="card-title">{product.name}</h5>
-                <p className="card-text">{product.description}</p>
-                <p className="card-text"><strong>${product.price}</strong></p>
-                <button className="btn btn-primary"onClick={() => addToCart(product)}>Add to Cart</button>
+      {filteredProducts.length === 0 ? (
+        <div className="text-center">
+          <p>No products found matching your search.</p>
+        </div>
+      ) : (
+        <div className="row g-4">
+          {filteredProducts.map((product) => (
+            <div key={product.id} className="col-md-4">
+              <div className="card h-100">
+                <img src={product.image} className="card-img-top" alt={product.name} />
+                <div className="card-body">
+                  <h5 className="card-title">{product.name}</h5>
+                  <p className="card-text">{product.description}</p>
+                  <p className="card-text"><strong>${product.price}</strong></p>
+                  <button 
+                    className="btn btn-primary"
+                    onClick={() => addToCart(product)}
+                  >
+                    Add to Cart
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

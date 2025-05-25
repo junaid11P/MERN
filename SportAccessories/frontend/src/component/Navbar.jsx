@@ -1,9 +1,17 @@
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
-import React from 'react';
-import { Link } from 'react-router-dom';
 
+const Navbar = ({ onSearch }) => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
 
-const Navbar = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    navigate('/products');
+    onSearch(searchQuery);
+  };
+
   return (
     <div>
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -24,11 +32,20 @@ const Navbar = () => {
       </ul>
     </div>
 
-            {/* Centered search bar */}
+            {/* Updated search bar */}
             <div className="mx-auto" style={{ width: '50%' }}>
-              <form className="d-flex" role="search">
-                <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                <button className="btn btn-outline-success" type="submit">Search</button>
+              <form className="d-flex" role="search" onSubmit={handleSubmit}>
+                <input 
+                  className="form-control me-2" 
+                  type="search" 
+                  placeholder="Search products..." 
+                  aria-label="Search"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                <button className="btn btn-outline-success" type="submit">
+                  Search
+                </button>
               </form>
             </div>
 
