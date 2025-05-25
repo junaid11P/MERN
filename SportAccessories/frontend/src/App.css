@@ -44,3 +44,29 @@
     transform: rotate(360deg);
   }
 }
+
+.overflow-auto::-webkit-scrollbar {
+  display: none;
+}
+
+.overflow-auto {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.card {
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.btn-light {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.btn-light:hover {
+  background: rgba(255, 255, 255, 1);
+}

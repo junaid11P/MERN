@@ -19,7 +19,7 @@ const Navbar = () => {
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <Link class="nav-link active" aria-current="page" to="/">Product</Link>
+          <Link class="nav-link active" aria-current="page" to="/products">Product</Link>
         </li>
       </ul>
     </div>
@@ -45,7 +45,7 @@ const Navbar = () => {
             {/* Cart Icon on the right */}
             <ul className="navbar-nav mb-2 mb-lg-0">
               <li className="nav-item">
-                <Link className="nav-link" to="/" title="Cart">
+                <Link className="nav-link" to="/cart" title="Cart">
                   <i className="bi bi-cart4" style={{ fontSize: '1.5rem' }}></i><br />
     <small>Cart</small>
                 </Link>

@@ -1,19 +1,60 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
   const [textScale, setTextScale] = useState(0.3);
   const [textVisible, setTextVisible] = useState(true);
   const [imgScale, setImgScale] = useState(2);
   const [captionVisible, setCaptionVisible] = useState(false);
-  const [secondTextScale, setSecondTextScale] = useState(0.5);
+
   const [secondImgScale, setSecondImgScale] = useState(1.5);
   const [secondCaptionVisible, setSecondCaptionVisible] = useState(false);
-  const [showSecondText, setShowSecondText] = useState(true);
+  const [showSecondText, setShowSecondText] = useState(false);
 
   const imgRef1 = useRef();
   const captionRef1 = useRef();
   const imgRef2 = useRef();
   const captionRef2 = useRef();
+  const productListRef = useRef(); // Ref for the product list
+
+  const featuredProducts = [
+    {
+      id: 1,
+      name: "Professional Basketball",
+      price: 29.99,
+      image: "/images/basketball.jpg",
+    },
+    {
+      id: 2,
+      name: "Soccer Ball",
+      price: 24.99,
+      image: "/images/soccer.jpg",
+    },
+    {
+      id: 3,
+      name: "Tennis Racket",
+      price: 89.99,
+      image: "/images/tennis-racket.jpg",
+    },
+    {
+      id: 4,
+      name: "Yoga Mat",
+      price: 19.99,
+      image: "/images/yoga-mat.jpg",
+    },
+    {
+      id: 5,
+      name: "Dumbbells Set",
+      price: 49.99,
+      image: "/images/dumbbells.jpg",
+    },
+    {
+      id: 6,
+      name: "Running Shoes",
+      price: 79.99,
+      image: "/images/running-shoes.jpg",
+    }
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -38,28 +79,25 @@ const Home = () => {
       const captionTop = captionRef1.current?.getBoundingClientRect().top || 0;
       setCaptionVisible(captionTop < windowHeight * 0.8);
 
-      // Second Text Zoom In
-      const newSecondTextScale = scrollTop < 1800
-        ? 0.8 + (scrollTop - 1600) / 600
-        : 2;
-      setSecondTextScale(Math.min(Math.max(newSecondTextScale, 0.4), 2));
-
       // Second Image Zoom Out
       const imgRect2 = imgRef2.current?.getBoundingClientRect();
       const secondImgVisible = Math.min(Math.max(windowHeight - imgRect2?.top, 0), windowHeight);
       const newSecondImgScale = 1 + ((windowHeight - secondImgVisible) / windowHeight);
       setSecondImgScale(Math.min(Math.max(newSecondImgScale, 1), 1.5));
 
-      // Hide second text when image2 is more than halfway into view
-      if (imgRect2?.top < windowHeight * 0.8) {
-        setShowSecondText(false);
-      } else {
-        setShowSecondText(true);
-      }
-
       // Second Caption
       const captionTop2 = captionRef2.current?.getBoundingClientRect().top || 0;
       setSecondCaptionVisible(captionTop2 < windowHeight * 1.0);
+
+      // Show/hide second text based on scroll position
+      const showSecondTextScrollStart = 2400;
+      const showSecondTextScrollEnd = 2900;
+
+      if (scrollTop > showSecondTextScrollStart && scrollTop < showSecondTextScrollEnd) {
+        setShowSecondText(true);
+      } else {
+        setShowSecondText(false);
+      }
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -122,16 +160,71 @@ const Home = () => {
         </p>
       </div>
 
+      {/* Featured Products */}
+      <div className="container-fluid my-5" ref={productListRef}>
+        <div className="position-relative">
+          <div className="d-flex overflow-auto pb-3" style={{ scrollBehavior: 'smooth' }}>
+            {featuredProducts.map((product) => (
+              <div key={product.id} className="card mx-2" style={{ minWidth: '250px' }}>
+                <img
+                  src={product.image}
+                  className="card-img-top"
+                  alt={product.name}
+                  style={{ height: '200px', objectFit: 'cover' }}
+                />
+                <div className="card-body">
+                  <h5 className="card-title">{product.name}</h5>
+                  <p className="card-text">${product.price}</p>
+                  <div className="d-flex justify-content-between align-items-center">
+                    <button className="btn btn-primary btn-sm">Add to Cart</button>
+                    <Link to={`/products`} className="btn btn-outline-secondary btn-sm">
+                      Details
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <button
+            className="btn btn-light position-absolute top-50 start-0 translate-middle-y"
+            onClick={(e) => {
+              const container = e.target.parentElement.querySelector('.overflow-auto');
+              container.scrollLeft -= 300;
+            }}
+            style={{
+              zIndex: 2,
+              opacity: 0.8,
+              boxShadow: '0 0 10px rgba(0,0,0,0.1)'
+            }}
+          >
+            ❮
+          </button>
+          <button
+            className="btn btn-light position-absolute top-50 end-0 translate-middle-y"
+            onClick={(e) => {
+              const container = e.target.parentElement.querySelector('.overflow-auto');
+              container.scrollLeft += 300;
+            }}
+            style={{
+              zIndex: 2,
+              opacity: 0.8,
+              boxShadow: '0 0 10px rgba(0,0,0,0.1)'
+            }}
+          >
+            ❯
+          </button>
+        </div>
+      </div>
+
       {/* Text 2 */}
-      <h2
+      <h1
         style={{
           position: 'fixed',
-          top: '70%',
+          top: '80%',
           left: '50%',
-          transform: `translate(-50%, -50%) scale(${secondTextScale})`,
-          transformOrigin: 'center center',
+          transform: 'translate(-50%, -50%)',
           transition: 'opacity 1s ease',
-          opacity: showSecondText && secondTextScale > 1.5 ? 1 : 0,
+          opacity: showSecondText ? 1 : 0,
           fontWeight: 600,
           color: '#111',
           zIndex: 998,
@@ -139,7 +232,7 @@ const Home = () => {
         }}
       >
         Shop Smarter. Play Harder.
-      </h2>
+      </h1>
 
       {/* Image 2 */}
       <div className="d-flex justify-content-center" style={{ marginTop: '60vh', zIndex: 10 }}>
