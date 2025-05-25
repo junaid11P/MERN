@@ -1,6 +1,6 @@
 // src/App.jsx
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './component/Navbar';
 import Footer from './component/Footer';
 import Home from './pages/Home';
@@ -9,10 +9,12 @@ import Register from './pages/Register';
 import Products from './pages/Products';
 import Cart from './pages/Cart';
 import ReturnPolicy from './pages/ReturnPolicy';
+import Checkout from './pages/Checkout';
 
 const App = () => {
   const [cartItems, setCartItems] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const addToCart = (product) => {
     setCartItems(prevItems => {
@@ -45,7 +47,7 @@ const App = () => {
   return (
     <Router>
       <div className="d-flex flex-column min-vh-100">
-        <Navbar onSearch={setSearchQuery} />
+        <Navbar onSearch={setSearchQuery} isAuthenticated={isAuthenticated} />
         <main className="flex-grow-1">
           <Routes>
             <Route path="/" element={<Home addToCart={addToCart} />} />
@@ -68,6 +70,16 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/return-policy" element={<ReturnPolicy />} />
+            <Route 
+              path="/checkout" 
+              element={
+                isAuthenticated ? (
+                  <Checkout cartItems={cartItems} />
+                ) : (
+                  <Navigate to="/login" replace />
+                )
+              } 
+            />
           </Routes>
         </main>
         <Footer />

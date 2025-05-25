@@ -1,7 +1,17 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-const Cart = ({ cartItems, updateQuantity, removeFromCart }) => {
+const Cart = ({ cartItems, updateQuantity, removeFromCart, isAuthenticated }) => {
+  const navigate = useNavigate();
+
+  const handleCheckout = () => {
+    if (isAuthenticated) {
+      navigate('/checkout');
+    } else {
+      navigate('/login', { state: { returnPath: '/checkout' } });
+    }
+  };
+
   const calculateTotal = () => {
     return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
   };
@@ -57,7 +67,12 @@ const Cart = ({ cartItems, updateQuantity, removeFromCart }) => {
               <h5>Order Summary</h5>
               <p>Total Items: {cartItems.length}</p>
               <p>Total Amount: ${calculateTotal().toFixed(2)}</p>
-              <button className="btn btn-success">Proceed to Checkout</button>
+              <button 
+                className="btn btn-success"
+                onClick={handleCheckout}
+              >
+                Proceed to Checkout
+              </button>
             </div>
           </div>
         </>
