@@ -10,16 +10,12 @@ const App = () => {
   return (
     <Router>
       <Navbar />
-      <Home />
-      
       {/* Define your routes here */}
-      <div className="container">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/Login" element={<Login />} />
-          <Route path="/Register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
-      </div>
     </Router>
   );
 };

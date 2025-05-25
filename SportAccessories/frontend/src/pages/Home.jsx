@@ -39,10 +39,10 @@ const Home = () => {
       setCaptionVisible(captionTop < windowHeight * 0.8);
 
       // Second Text Zoom In
-      const newSecondTextScale = scrollTop < 1900
-        ? 0.5 + (scrollTop - 1600) / 600
+      const newSecondTextScale = scrollTop < 1800
+        ? 0.8 + (scrollTop - 1600) / 600
         : 2;
-      setSecondTextScale(Math.min(Math.max(newSecondTextScale, 0.5), 2));
+      setSecondTextScale(Math.min(Math.max(newSecondTextScale, 0.4), 2));
 
       // Second Image Zoom Out
       const imgRect2 = imgRef2.current?.getBoundingClientRect();
@@ -51,7 +51,7 @@ const Home = () => {
       setSecondImgScale(Math.min(Math.max(newSecondImgScale, 1), 1.5));
 
       // Hide second text when image2 is more than halfway into view
-      if (imgRect2?.top < windowHeight * 0.4) {
+      if (imgRect2?.top < windowHeight * 0.8) {
         setShowSecondText(false);
       } else {
         setShowSecondText(true);
@@ -59,7 +59,7 @@ const Home = () => {
 
       // Second Caption
       const captionTop2 = captionRef2.current?.getBoundingClientRect().top || 0;
-      setSecondCaptionVisible(captionTop2 < windowHeight * 1.2);
+      setSecondCaptionVisible(captionTop2 < windowHeight * 1.0);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -121,7 +121,8 @@ const Home = () => {
           From smart wearables to performance gear, find the tools that push you further and faster.
         </p>
       </div>
-{/* Text 2 */}
+
+      {/* Text 2 */}
       <h2
         style={{
           position: 'fixed',
