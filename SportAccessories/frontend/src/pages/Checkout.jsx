@@ -51,20 +51,27 @@ const Checkout = () => {
 
     try {
       const token = localStorage.getItem('token');
-      await axios.post('http://localhost:5050/api/orders', {
+      const orderData = {
         shippingAddress: formData.shippingAddress,
         paymentMethod: formData.paymentMethod,
-        paymentDetails: {
+      };
+
+      // Only include payment details for card payments
+      if (formData.paymentMethod === 'card') {
+        orderData.paymentDetails = {
           cardNumber: formData.cardNumber,
           cardExpiry: formData.cardExpiry,
           cardCVV: formData.cardCVV
-        }
-      }, {
+        };
+      }
+
+      await axios.post('http://localhost:5050/api/orders', orderData, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
-      // Navigate to order confirmation
-      navigate('/order-confirmation');
+      // Show success message and navigate to profile
+      alert('Order placed successfully!');
+      navigate('/profile');
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to place order');
     }
@@ -96,7 +103,7 @@ const Checkout = () => {
 
                 <div className="mb-3">
                   <label className="form-label">Payment Method</label>
-                  <div className="form-check">
+                  <div className="form-check mb-2">
                     <input
                       className="form-check-input"
                       type="radio"
@@ -108,6 +115,20 @@ const Checkout = () => {
                     />
                     <label className="form-check-label" htmlFor="card">
                       Credit/Debit Card
+                    </label>
+                  </div>
+                  <div className="form-check">
+                    <input
+                      className="form-check-input"
+                      type="radio"
+                      name="paymentMethod"
+                      id="cod"
+                      value="cod"
+                      checked={formData.paymentMethod === 'cod'}
+                      onChange={handleChange}
+                    />
+                    <label className="form-check-label" htmlFor="cod">
+                      Cash on Delivery
                     </label>
                   </div>
                 </div>
@@ -123,7 +144,7 @@ const Checkout = () => {
                         name="cardNumber"
                         value={formData.cardNumber}
                         onChange={handleChange}
-                        required
+                        required={formData.paymentMethod === 'card'}
                         maxLength="16"
                       />
                     </div>
@@ -139,7 +160,7 @@ const Checkout = () => {
                           placeholder="MM/YY"
                           value={formData.cardExpiry}
                           onChange={handleChange}
-                          required
+                          required={formData.paymentMethod === 'card'}
                           maxLength="5"
                         />
                       </div>
@@ -153,7 +174,7 @@ const Checkout = () => {
                           name="cardCVV"
                           value={formData.cardCVV}
                           onChange={handleChange}
-                          required
+                          required={formData.paymentMethod === 'card'}
                           maxLength="3"
                         />
                       </div>
