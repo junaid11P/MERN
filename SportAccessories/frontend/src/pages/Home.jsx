@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Home = ({ addToCart }) => {
   const navigate = useNavigate();
@@ -7,6 +8,7 @@ const Home = ({ addToCart }) => {
   const [textVisible, setTextVisible] = useState(true);
   const [imgScale, setImgScale] = useState(2);
   const [captionVisible, setCaptionVisible] = useState(false);
+  const [featuredProducts, setFeaturedProducts] = useState([]);
 
   const [secondImgScale, setSecondImgScale] = useState(1.5);
   const [secondCaptionVisible, setSecondCaptionVisible] = useState(false);
@@ -20,44 +22,19 @@ const Home = ({ addToCart }) => {
   const productListRef = useRef();
   const middleTextRef = useRef();
 
-  const featuredProducts = [
-    {
-      id: 1,
-      name: "Professional Basketball",
-      price: 29.99,
-      image: "/images/basketball.jpg",
-    },
-    {
-      id: 2,
-      name: "Soccer Ball",
-      price: 24.99,
-      image: "/images/soccer.jpg",
-    },
-    {
-      id: 3,
-      name: "Tennis Racket",
-      price: 89.99,
-      image: "/images/tennis-racket.jpg",
-    },
-    {
-      id: 4,
-      name: "Yoga Mat",
-      price: 19.99,
-      image: "/images/yoga-mat.jpg",
-    },
-    {
-      id: 5,
-      name: "Dumbbells Set",
-      price: 49.99,
-      image: "/images/dumbbells.jpg",
-    },
-    {
-      id: 6,
-      name: "Running Shoes",
-      price: 79.99,
-      image: "/images/running-shoes.jpg",
+  useEffect(() => {
+    fetchFeaturedProducts();
+  }, []);
+
+  const fetchFeaturedProducts = async () => {
+    try {
+      const response = await axios.get('http://localhost:5050/api/products');
+      // Only show first 6 products as featured
+      setFeaturedProducts(response.data.slice(0, 6));
+    } catch (err) {
+      console.error('Error fetching products:', err);
     }
-  ];
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -156,26 +133,33 @@ const Home = ({ addToCart }) => {
         <div className="position-relative">
           <div className="d-flex overflow-auto pb-3" style={{ scrollBehavior: 'smooth' }}>
             {featuredProducts.map((product) => (
-              <div key={product.id} className="card mx-2" style={{ minWidth: '250px' }}>
+              <div key={product._id} className="card mx-2" style={{ minWidth: '250px' }}>
                 <img
-                  src={product.image}
+                  src={`http://localhost:5050${product.imageUrl}`}
                   className="card-img-top"
                   alt={product.name}
                   style={{ height: '200px', objectFit: 'cover' }}
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = '/logo.png';
+                  }}
                 />
                 <div className="card-body">
                   <h5 className="card-title">{product.name}</h5>
-                  <p className="card-text">${product.price}</p>
+                  <p className="card-text">${product.price.toFixed(2)}</p>
                   <div className="d-flex justify-content-between align-items-center">
                     <button 
                       className="btn btn-primary btn-sm"
-                      onClick={() => {
+                      onClick={async () => {
                         const token = localStorage.getItem('token');
                         if (!token) {
                           navigate('/login');
                           return;
                         }
-                        addToCart(product);
+                        const success = await addToCart(product);
+                        if (!success) {
+                          navigate('/login');
+                        }
                       }}
                     >
                       Add to Cart

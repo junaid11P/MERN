@@ -1,6 +1,7 @@
 // src/App.jsx
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import axios from 'axios';
 import Navbar from './component/Navbar';
 import Footer from './component/Footer';
 import Home from './pages/Home';
@@ -22,6 +23,30 @@ const App = () => {
     setIsAuthenticated(!!token);
   }, []);
 
+  const addToCart = async (product) => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        return false;
+      }
+
+      await axios.post('http://localhost:5050/api/cart/add', {
+        productId: product._id,
+        quantity: 1
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      // Show success notification
+      alert('Product added to cart successfully!');
+      return true;
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+      alert('Failed to add product to cart');
+      return false;
+    }
+  };
+
   // Protected Route component
   const ProtectedRoute = ({ children }) => {
     if (!isAuthenticated) {
@@ -36,10 +61,10 @@ const App = () => {
         <Navbar onSearch={setSearchQuery} isAuthenticated={isAuthenticated} />
         <main className="flex-grow-1">
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Home addToCart={addToCart} />} />
             <Route 
               path="/products" 
-              element={<Products searchQuery={searchQuery} />}
+              element={<Products searchQuery={searchQuery} addToCart={addToCart} />}
             />
             <Route 
               path="/cart" 

@@ -17,7 +17,7 @@ const Checkout = () => {
 
   useEffect(() => {
     fetchCart();
-  }, []);
+  }, );
 
   const fetchCart = async () => {
     try {
