@@ -27,7 +27,10 @@ const Navbar = ({ onSearch }) => {
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <Link class="nav-link active" aria-current="page" to="/products">Product</Link>
+          <Link class="nav-link active" aria-current="page" to="/">Home</Link>
+        </li>
+        <li class="nav-item">
+          <Link class="nav-link active" to="/products">Product</Link>
         </li>
       </ul>
     </div>
