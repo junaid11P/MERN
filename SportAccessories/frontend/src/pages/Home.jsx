@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Home = ({ addToCart }) => {
+  const navigate = useNavigate();
   const [textScale, setTextScale] = useState(0.3);
   const [textVisible, setTextVisible] = useState(true);
   const [imgScale, setImgScale] = useState(2);
@@ -168,7 +169,14 @@ const Home = ({ addToCart }) => {
                   <div className="d-flex justify-content-between align-items-center">
                     <button 
                       className="btn btn-primary btn-sm"
-                      onClick={() => addToCart(product)}
+                      onClick={() => {
+                        const token = localStorage.getItem('token');
+                        if (!token) {
+                          navigate('/login');
+                          return;
+                        }
+                        addToCart(product);
+                      }}
                     >
                       Add to Cart
                     </button>

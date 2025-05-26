@@ -1,5 +1,5 @@
 // src/App.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './component/Navbar';
 import Footer from './component/Footer';
@@ -10,38 +10,24 @@ import Products from './pages/Products';
 import Cart from './pages/Cart';
 import ReturnPolicy from './pages/ReturnPolicy';
 import Checkout from './pages/Checkout';
+import Profile from './pages/Profile';
+import Order from './pages/Order';
 
 const App = () => {
-  const [cartItems, setCartItems] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const addToCart = (product) => {
-    setCartItems(prevItems => {
-      const existingItem = prevItems.find(item => item.id === product.id);
-      if (existingItem) {
-        return prevItems.map(item =>
-          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
-        );
-      }
-      return [...prevItems, { ...product, quantity: 1 }];
-    });
-  };
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    setIsAuthenticated(!!token);
+  }, []);
 
-  const removeFromCart = (productId) => {
-    setCartItems(prevItems => prevItems.filter(item => item.id !== productId));
-  };
-
-  const updateQuantity = (productId, delta) => {
-    setCartItems(prevItems => 
-      prevItems.map(item => {
-        if (item.id === productId) {
-          const newQuantity = item.quantity + delta;
-          return newQuantity > 0 ? { ...item, quantity: newQuantity } : item;
-        }
-        return item;
-      }).filter(item => item.quantity > 0)
-    );
+  // Protected Route component
+  const ProtectedRoute = ({ children }) => {
+    if (!isAuthenticated) {
+      return <Navigate to="/login" replace />;
+    }
+    return children;
   };
 
   return (
@@ -50,36 +36,64 @@ const App = () => {
         <Navbar onSearch={setSearchQuery} isAuthenticated={isAuthenticated} />
         <main className="flex-grow-1">
           <Routes>
-            <Route path="/" element={<Home addToCart={addToCart} />} />
+            <Route path="/" element={<Home />} />
             <Route 
               path="/products" 
-              element={
-                <Products 
-                  addToCart={addToCart} 
-                  searchQuery={searchQuery}
-                />
-              } 
+              element={<Products searchQuery={searchQuery} />}
             />
-            <Route path="/cart" element={
-              <Cart 
-                cartItems={cartItems}
-                updateQuantity={updateQuantity}
-                removeFromCart={removeFromCart}
-              />
-            } />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/return-policy" element={<ReturnPolicy />} />
             <Route 
-              path="/checkout" 
+              path="/cart" 
+              element={
+                <ProtectedRoute>
+                  <Cart />
+                </ProtectedRoute>
+              }
+            />
+            <Route 
+              path="/profile" 
+              element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
+            <Route 
+              path="/order/:orderId" 
+              element={
+                <ProtectedRoute>
+                  <Order />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/checkout"
+              element={
+                <ProtectedRoute>
+                  <Checkout />
+                </ProtectedRoute>
+              }
+            />
+            <Route 
+              path="/login" 
               element={
                 isAuthenticated ? (
-                  <Checkout cartItems={cartItems} />
+                  <Navigate to="/" replace />
                 ) : (
-                  <Navigate to="/login" replace />
+                  <Login setIsAuthenticated={setIsAuthenticated} />
                 )
-              } 
+              }
             />
+            <Route 
+              path="/register" 
+              element={
+                isAuthenticated ? (
+                  <Navigate to="/" replace />
+                ) : (
+                  <Register setIsAuthenticated={setIsAuthenticated} />
+                )
+              }
+            />
+            <Route path="/return-policy" element={<ReturnPolicy />} />
           </Routes>
         </main>
         <Footer />

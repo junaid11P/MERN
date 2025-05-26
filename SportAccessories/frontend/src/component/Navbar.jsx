@@ -1,10 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 
 const Navbar = ({ onSearch }) => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Check if user is logged in by looking for token in localStorage
+    const token = localStorage.getItem('token');
+    setIsLoggedIn(!!token);
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -20,17 +27,17 @@ const Navbar = ({ onSearch }) => {
           <Link className="navbar-brand" to="/" title="Home">
             <img src="1.png" alt="Logo" width="70" height="70" className="d-inline-block align-text-top" />
           </Link>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-             <span class="navbar-toggler-icon"></span>
+        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+             <span className="navbar-toggler-icon"></span>
         </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <Link class="nav-link active" aria-current="page" to="/">Home</Link>
+    <div className="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+        <li className="nav-item">
+          <Link className="nav-link active" aria-current="page" to="/">Home</Link>
         </li>
-        <li class="nav-item">
-          <Link class="nav-link active" to="/products">Product</Link>
+        <li className="nav-item">
+          <Link className="nav-link active" to="/products">Product</Link>
         </li>
       </ul>
     </div>
@@ -53,14 +60,40 @@ const Navbar = ({ onSearch }) => {
             </div>
 
 
-            {/* Login Icon on the right */}
+            {/* Profile/Login Icon on the right */}
             <ul className="navbar-nav mb-2 mb-lg-0">
-              <li className="nav-item">
-                <Link className="nav-link" to="/login" title="Login">
-                  <i className="bi bi-person" style={{ fontSize: '1.5rem' }}></i><br />
-    <small>Login </small>
-                </Link>
-              </li>
+              {isLoggedIn ? (
+                <>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/profile" title="Profile">
+                      <i className="bi bi-person-circle" style={{ fontSize: '1.5rem' }}></i><br />
+                      <small>Profile</small>
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link 
+                      className="nav-link" 
+                      to="/" 
+                      title="Logout"
+                      onClick={() => {
+                        localStorage.removeItem('token');
+                        setIsLoggedIn(false);
+                        navigate('/');
+                      }}
+                    >
+                      <i className="bi bi-box-arrow-right" style={{ fontSize: '1.5rem' }}></i><br />
+                      <small>Logout</small>
+                    </Link>
+                  </li>
+                </>
+              ) : (
+                <li className="nav-item">
+                  <Link className="nav-link" to="/login" title="Login">
+                    <i className="bi bi-person" style={{ fontSize: '1.5rem' }}></i><br />
+                    <small>Login</small>
+                  </Link>
+                </li>
+              )}
             </ul>
             {/* Cart Icon on the right */}
             <ul className="navbar-nav mb-2 mb-lg-0">
