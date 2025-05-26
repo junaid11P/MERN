@@ -40,7 +40,7 @@ const orderSchema = new mongoose.Schema({
   },
   paymentMethod: {
     type: String,
-    enum: ['card', 'cash'],
+    enum: ['card', 'cod'], // 'cod' for Cash on Delivery
     required: true
   },
   paymentStatus: {
@@ -51,7 +51,11 @@ const orderSchema = new mongoose.Schema({
   paymentDetails: {
     cardNumber: String,
     cardExpiry: String,
-    cardCVV: String
+    cardCVV: String,
+    isCashOnDelivery: {
+      type: Boolean,
+      default: false
+    }
   },
   trackingNumber: {
     type: String,
@@ -90,9 +94,24 @@ orderSchema.virtual('statusUpdates').get(function() {
   return updates;
 });
 
+// Pre-save middleware to handle payment status for COD
+orderSchema.pre('save', function(next) {
+  if (this.isNew && this.paymentMethod === 'cod') {
+    this.paymentDetails = {
+      isCashOnDelivery: true
+    };
+    this.paymentStatus = 'pending';
+  }
+  next();
+});
+
 // Method to update order status
 orderSchema.methods.updateStatus = async function(newStatus) {
   this.status = newStatus;
+  // Update payment status to completed when order is delivered for COD
+  if (newStatus === 'delivered' && this.paymentMethod === 'cod') {
+    this.paymentStatus = 'completed';
+  }
   return this.save();
 };
 

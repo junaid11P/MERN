@@ -51,9 +51,14 @@ const Checkout = () => {
 
     try {
       const token = localStorage.getItem('token');
+      const total = formData.paymentMethod === 'cod' 
+        ? cart.total * 1.01  // Add 1% COD charge
+        : cart.total;
+
       const orderData = {
         shippingAddress: formData.shippingAddress,
         paymentMethod: formData.paymentMethod,
+        totalAmount: total
       };
 
       // Only include payment details for card payments
@@ -62,6 +67,12 @@ const Checkout = () => {
           cardNumber: formData.cardNumber,
           cardExpiry: formData.cardExpiry,
           cardCVV: formData.cardCVV
+        };
+      } else {
+        // For COD, include delivery charge details
+        orderData.paymentDetails = {
+          isCashOnDelivery: true,
+          codCharge: (cart.total * 0.01).toFixed(2)
         };
       }
 
@@ -201,9 +212,24 @@ const Checkout = () => {
                 </div>
               ))}
               <hr />
+              <div className="d-flex justify-content-between mb-2">
+                <span>Subtotal:</span>
+                <span>${cart.total.toFixed(2)}</span>
+              </div>
+              {formData.paymentMethod === 'cod' && (
+                <div className="d-flex justify-content-between mb-2">
+                  <span>Cash on Delivery Charge (1%):</span>
+                  <span>${(cart.total * 0.01).toFixed(2)}</span>
+                </div>
+              )}
+              <hr />
               <div className="d-flex justify-content-between">
                 <strong>Total:</strong>
-                <strong>${cart.total.toFixed(2)}</strong>
+                <strong>
+                  ${formData.paymentMethod === 'cod' 
+                    ? (cart.total * 1.01).toFixed(2) 
+                    : cart.total.toFixed(2)}
+                </strong>
               </div>
             </div>
           </div>
