@@ -9,7 +9,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/talk" element={<Talk />} />
-        <Route path="*" element={<Navigate to="/" />} /> {/* Redirect unknown routes to Home */}
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </BrowserRouter>
   );
