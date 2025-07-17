@@ -96,11 +96,27 @@ const Talk = () => {
         alignItems: "center",
         justifyContent: "center",
         color: "#fff",
-        fontSize: "1.5rem"
+        fontSize: "1.5rem",
+        position: "relative"
       }}
     >
-      <div>Transcript: {transcript}</div>
-      <div>Response: {response}</div>
+      {/* Bottom left transcript and response */}
+      <div
+        style={{
+          position: "absolute",
+          left: "2rem",
+          bottom: "2rem",
+          background: "rgba(0,0,0,0.7)",
+          padding: "1rem 2rem",
+          borderRadius: "1rem",
+          color: "#fff",
+          fontSize: "1.5rem",
+          maxWidth: "40vw"
+        }}
+      >
+        <div>Transcript: {transcript}</div>
+        <div>Response: {response}</div>
+      </div>
       {/* Optional: Button for user-triggered speech */}
       {/* <button onClick={speak}>Hear Response</button> */}
     </div>
