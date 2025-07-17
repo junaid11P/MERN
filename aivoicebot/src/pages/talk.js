@@ -14,7 +14,7 @@ const Talk = () => {
     if (lower.includes("weather")) return "Today's weather is sunny and pleasant.";
     if (lower.includes("time")) return `The current time is ${new Date().toLocaleTimeString()}.`;
     if (lower.includes("date")) return `Today's date is ${new Date().toLocaleDateString()}.`;
-    if (lower.includes("which is my college")) return "M S Ramaiah University of Applied Sciences"; 
+    if (lower.includes("day")) return `Today is ${new Date().toLocaleDateString('en-US', { weekday: 'long' })}.`;
     if (lower.includes("your name")) return "My name is Jarvis, your personal assistant.";
     if (lower.includes("who am i") || lower.includes("my name is")) {
       // Extract name from query
@@ -36,43 +36,52 @@ const Talk = () => {
     }
     if (lower.includes("joke")) return "Why did the computer show up at work late? It had a hard drive!";
     if (lower.includes("news")) return "Here is the latest news: Stay positive and keep learning!";
-    return `Jarvis: I heard you say "${query}"`;
+    if (lower.includes("help")) return "I'm here to assist you. What do you need help with?";
+    if (lower.includes("exit") || lower.includes("quit")) {
+      return "Goodbye! Have a great day!";
+    }
   };
 
   const response = getResponse(transcript);
 
   useEffect(() => {
     const synth = window.speechSynthesis;
+    let utter;
 
     const speak = () => {
       const voices = synth.getVoices();
-      const jarvisVoice = voices.find((voice) =>
-        voice.name.includes("Daniel")
-      );
-      const utter = new SpeechSynthesisUtterance(response);
+      // Try to find a UK English voice, fallback to any English voice
+      let jarvisVoice = voices.find((voice) => voice.lang === "en-GB");
+      if (!jarvisVoice) {
+        jarvisVoice = voices.find((voice) => voice.lang.startsWith("en"));
+      }
+      utter = new SpeechSynthesisUtterance(response);
       utter.lang = "en-GB";
       if (jarvisVoice) {
         utter.voice = jarvisVoice;
       }
       synth.speak(utter);
 
-      // If user said their name, go back to home after response
-      if (
-        transcript.toLowerCase().includes("my name is") ||
-        transcript.toLowerCase().includes("who am i")
-      ) {
-        utter.onend = () => {
-          navigate("/");
-        };
-      }
+      utter.onend = () => {
+        navigate("/");
+      };
     };
 
     if (synth.getVoices().length === 0) {
-      synth.onvoiceschanged = speak;
+      const timer = setTimeout(speak, 500); // Slightly longer delay
+      synth.onvoiceschanged = () => {
+        clearTimeout(timer);
+        speak();
+      };
+      return () => {
+        clearTimeout(timer);
+        synth.cancel();
+      };
     } else {
       speak();
+      return () => synth.cancel();
     }
-  }, [response, transcript, navigate]);
+  }, [response, navigate]);
 
   return (
     <div
@@ -82,8 +91,19 @@ const Talk = () => {
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        color: "#fff",
+        fontSize: "1.5rem"
       }}
-    />
+    >
+      <div>Transcript: {transcript}</div>
+      <div>Response: {response}</div>
+      {/* Optional: Button for user-triggered speech */}
+      {/* <button onClick={speak}>Hear Response</button> */}
+    </div>
   );
 };
 
