@@ -1,70 +1,87 @@
-# Getting Started with Create React App
+# AI Voice Bot (Jarvis 2.0)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a simple AI voice assistant web app built with React. It uses browser Speech Recognition and Speech Synthesis APIs to listen to your voice, process your query, and respond with both text and speech. The assistant is named **Jarvis**.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- Click anywhere on the home screen to start voice recording.
+- Supports queries like:
+  - Greetings ("hello", "how are you")
+  - Date, time, and day
+  - Weather (static response)
+  - Telling jokes
+  - Opening Google or YouTube
+  - Saying its name
+  - News (static response)
+  - Thank you/help/exit
+- Displays both your transcript and Jarvis's response at the bottom left.
+- Jarvis responds with voice and text.
 
-### `npm start`
+## Getting Started
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Prerequisites
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- Node.js and npm installed
+- Modern browser (Chrome, Edge, Safari) with Speech Recognition and Speech Synthesis support
 
-### `npm test`
+### Installation
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/yourusername/aivoicebot.git
+    cd aivoicebot
+    ```
 
-### `npm run build`
+2. Install dependencies:
+    ```bash
+    npm install
+    ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Running the App
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Start the development server:
+```bash
+npm start
+```
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Usage
 
-### `npm run eject`
+- On the home page, **click anywhere** to start recording your voice.
+- Speak your query.
+- You will be redirected to the response page, where Jarvis will display and speak the response.
+- Both your transcript and Jarvis's response appear at the bottom left.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Project Structure
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```
+public/
+  assets/           # GIFs and logo
+  index.html
+src/
+  pages/
+    home.js         # Home page with voice recording
+    talk.js         # Response page with speech synthesis
+  App.js            # Routing setup
+  index.js          # Entry point
+  App.css           # Global styles
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Customization
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- To change the background GIFs, replace files in `public/assets/`.
+- To add more responses or commands, edit the `getResponse` function in `src/pages/talk.js`.
 
-## Learn More
+### Limitations
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- Speech Recognition and Synthesis may not work on all browsers or devices.
+- Speech Synthesis may require user interaction to play audio (browser security).
+- Responses are mostly static and for demo purposes.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### License
 
-### Code Splitting
+This project is for educational/demo use.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+**Enjoy
