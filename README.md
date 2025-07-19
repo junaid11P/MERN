@@ -4,6 +4,11 @@
 
 [basicreact Folder](./basicreact)
 
-## Project 2: SportAccessories
+## Project 2: AI Voice Bot
+
+[aivoicebot Folder](./aivoicebot)
+
+## Project 3: SportAccessories
 
 [SportAccessories Folder](./SportAccessories)
+
