@@ -1,4 +1,5 @@
+import React from 'react';
 function Home() {
-  return <h1>Welcome to the Home Page!</h1>;
+  return <h1><center>Hello! I am AI Guru J</center></h1>;
 }
 export default Home;
