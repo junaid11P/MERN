@@ -100,11 +100,13 @@ export const AuthProvider = ({ children }) => {
 
             // 3. Load user data
             loadUser();
+            return { success: true };
         } catch (err) {
             dispatch({
                 type: 'REGISTER_FAIL',
                 payload: err.response.data.msg
             });
+            return { success: false, msg: err.response.data.msg };
         }
     };
 
@@ -125,11 +127,13 @@ export const AuthProvider = ({ children }) => {
             setAuthToken(res.data.token);
 
             loadUser();
+            return { success: true };
         } catch (err) {
             dispatch({
                 type: 'LOGIN_FAIL',
                 payload: err.response.data.msg
             });
+            return { success: false, msg: err.response.data.msg };
         }
     };
 

@@ -1,0 +1,32 @@
+================================================================================
+SERVER STARTUP LOGS
+Command: cd server && npm start
+================================================================================
+
+> server@1.0.0 start
+> node index.js
+
+[dotenv] injecting env (3) from .env
+Server running on port 5001
+MongoDB Connected
+POST /api/auth/login 200 125.345 ms - 146
+GET /api/auth/user 200 15.201 ms - 189
+GET /api/tasks 200 22.105 ms - 1056
+
+
+================================================================================
+CLIENT STARTUP LOGS
+Command: cd client && npm run dev
+================================================================================
+
+> client@0.0.0 dev
+> vite
+
+  VITE v5.4.0  ready in 450 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose
+  ➜  press h + enter to show help
+
+[vite] hmr update /src/pages/Dashboard.jsx
+[vite] hmr update /src/context/AuthContext.jsx
