@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Home from './pages/Home';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import CurrentModuleSelect from './components/CurrentModuleSelect';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Link to="/about">About</Link> |{" "}
           <Link to="/contact">Contact</Link>
         </nav>
+        <CurrentModuleSelect />
 
         {/* Routes */}
         <Routes>
