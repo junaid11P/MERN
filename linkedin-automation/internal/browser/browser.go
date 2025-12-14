@@ -35,10 +35,9 @@ func New(cfg *config.Config) *Browser {
 	b.SlowMotion(cfg.SlowMotion) // Human-like delay between actions
 
 	// Create Page with Stealth
-	// stealth.JS provides standard concealment scripts
+	// This injects scripts to hide the fact that we are controlled by automation tools.
 	page := b.MustPage()
 
-	// Apply comprehensive stealth
 	page.MustEvalOnNewDocument(stealth.JS)
 
 	// Randomize User Agent

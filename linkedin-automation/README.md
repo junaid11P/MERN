@@ -1,76 +1,48 @@
-# LinkedIn Automation Tool (PoC)
+# LinkedIn Automation Bot (Experimental)
 
-A sophisticated Go-based automation tool for LinkedIn, designed for educational purposes to demonstrate advanced browser automation, stealth techniques, and clean architecture.
+Hi! This is my submission for the LinkedIn Automation assignment. It's a tool written in Go that automates connection requests and profile searching while trying to avoid bot detection.
 
-> **Disclaimer**: This tool is for **educational purposes only**. Automating LinkedIn violates their Terms of Service. Do not use on production accounts.
+> **Note**: This is strictly for educational purposes to demonstrate browser automation skills. Please don't use this on a real account you care about, as it violates LinkedIn's ToS.
 
-## Features
+## How it Works
 
-- **Stealth Automation**:
-  - **Human-like Mouse Movement**: Implements Bézier curves with overshoot and micro-corrections (`internal/stealth/mouse.go`).
-  - **Randomized Timing**: Variable delays for typing, clicking, and scrolling (`internal/stealth/human.go`).
-  - **Fingerprint Masking**: Uses `go-rod/stealth` to mask WebDriver signals and randomize User-Agent/Viewport.
+I built this using the `go-rod` library because it offers great control over the browser. The main challenge was simulating human behavior so the bot doesn't get blocked immediately.
 
-- **Core Functionality**:
-  - **Authentication**: Secure login flow with 2FA handling and session persistence (`internal/automation/auth.go`).
-  - **Search & Collect**: targeted searching and profile URL extraction (`internal/automation/search.go`).
-  - **Smart Actions**: Connect with personalized notes (`internal/automation/actions.go`).
+### Key Features
+*   **Stealth Mode**: I used Bézier curves for mouse movements so the cursor doesn't just teleport or move in straight lines.
+*   **Human Typing**: The bot types with variable speed and sometimes makes "mistakes" (and corrects them) to look real.
+*   **Smart Waiting**: It doesn't just wait X seconds; it waits for random intervals to mimic "thinking" time.
 
-- **Architecture**:
-  - Modular Go design (`cmd`, `internal`, `pkg`).
-  - Structured Logging (`pkg/logger`).
-  - Environemnt-based Configuration (`pkg/config`).
+## Setup & Run
 
-## Installation
-
-1.  **Prerequisites**:
-    - Go 1.20+
-    - Google Chrome installed
-
-2.  **Clone & Build**:
+1.  **Install Go**: Make sure you have Go installed (I used version 1.25).
+2.  **Get the code**:
     ```bash
     git clone <repo-url>
     cd linkedin-automation
-    go mod tidy
-    go build -o linkedin-bot cmd/linkedin-bot/main.go
     ```
-
-3.  **Configuration**:
-    Copy the example env file and update your credentials:
+3.  **Config**:
+    Rename `.env.example` to `.env` and add your LinkedIn login details.
     ```bash
     cp .env.example .env
-    # Edit .env with your details
+    ```
+4.  **Run it**:
+    ```bash
+    go build -o linkedin-bot cmd/linkedin-bot/main.go
+    ./linkedin-bot
     ```
 
-## Usage
+## Project Structure
 
-Run the bot:
-```bash
-./linkedin-bot
-```
+I tried to keep the code modular/clean:
 
-### Configuration Options (.env)
-- `HEADLESS_MODE`: Set to `false` to see the browser in action (recommended for verification).
-- `SLOW_MOTION_MS`: Add internal rod delay (e.g. `10`).
-- `MAX_CONNECTS_PER_DAY`: Safety limit.
+*   `cmd/`: Entry point.
+*   `internal/browser`: Handles the browser instance and stealth settings (User-Agent, etc.).
+*   `internal/stealth`: This is where the fun math happens for the mouse movements.
+*   `internal/automation`: Contains the actual logic for login, searching, and connecting.
 
-## Directory Structure
+## A Note on Anti-Detection
 
-```
-├── cmd
-│   └── linkedin-bot    # Main Entry Point
-├── internal
-│   ├── automation      # Auth, Search, Connect Logic
-│   ├── browser         # Rod Browser Wrapper + Stealth Init
-│   └── stealth         # Mouse, Typing, Scroll Algorithms
-├── pkg
-│   ├── config          # Config Loader
-│   └── logger          # Structured Logger
-└── ...
-```
+The hardest part was the mouse movement. I implemented a function in `mouse.go` that adds some "noise" to the path so it generates a curve rather than a line. I also disabled the standard `navigator.webdriver` flags so Chrome doesn't shout "I AM A ROBOT" to the website.
 
-## Anti-Detection Implementation Details
-
-- **Mouse**: We calculate a chaotic path using randomization and linear interpolation with overshoot to mimic hand jitter.
-- **Typing**: We simulate typing speed variations and occasional errors (typing wrong char, then backspacing).
-- **Session**: Cookies are saved to `user_data` directory to avoid repeated logins.
+Hope you like it!
