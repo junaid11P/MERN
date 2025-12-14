@@ -31,7 +31,7 @@ func main() {
 	logger.Info("Login success. waiting before search...")
 
 	// Example Search
-	profiles, err := bot.SearchPeople("Software Engineer", 1)
+	profiles, err := bot.SearchPeople("Intern", 1)
 	if err != nil {
 		logger.Error("Search failed: ", err)
 	}
