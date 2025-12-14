@@ -11,6 +11,7 @@ func main() {
 	logger.Info("Starting LinkedIn Automation Bot")
 
 	// 1. Load Configuration
+	// We read from .env if available, otherwise env vars.
 	cfg := config.LoadConfig()
 
 	// 2. Initialize Browser
@@ -27,7 +28,7 @@ func main() {
 	}
 
 	logger.Info("Login success. waiting before search...")
-	// stealth.RandomSleep(5*time.Second, 10*time.Second) // cannot access stealth package directly here easily unless imported, or use time
+	logger.Info("Login success. waiting before search...")
 
 	// Example Search
 	profiles, err := bot.SearchPeople("Software Engineer", 1)

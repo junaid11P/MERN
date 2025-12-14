@@ -14,8 +14,10 @@ type Point struct {
 	X, Y float64
 }
 
-// MoveMouseSmoothly moves the mouse to x,y using a cubic Bezier curve
+// MoveMouseSmoothly moves the mouse to the target (x,y) somewhat naturally.
+// It uses a simple overshooting method to simulate a human hand that isn't perfectly precise.
 func MoveMouseSmoothly(page *rod.Page, toX, toY float64) {
+	// Add some randomness to the target first (overshoot)
 	overshootX := toX + (rand.Float64()*20 - 10)
 	overshootY := toY + (rand.Float64()*20 - 10)
 
@@ -29,7 +31,7 @@ func MoveMouseSmoothly(page *rod.Page, toX, toY float64) {
 	move(toX, toY)
 }
 
-// Function to calculate cubic bezier points (if we had control points)
+// Function to calculate cubic bezier points
 func bezier(t float64, p0, p1, p2, p3 float64) float64 {
 	return math.Pow(1-t, 3)*p0 +
 		3*math.Pow(1-t, 2)*t*p1 +
