@@ -4,6 +4,11 @@ Hi! This is my submission for the LinkedIn Automation assignment. It's a tool wr
 
 > **Note**: This is strictly for educational purposes to demonstrate browser automation skills. Please don't use this on a real account you care about, as it violates LinkedIn's ToS.
 
+## Demo
+
+[Watch the demonstration video](https://drive.google.com/file/d/1Wdo7SBtn-ySSZ_iM17e8cdv41kPLJC5k/view?usp=drivesdk)
+
+
 ## How it Works
 
 I built this using the `go-rod` library because it offers great control over the browser. The main challenge was simulating human behavior so the bot doesn't get blocked immediately.
