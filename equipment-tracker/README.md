@@ -28,7 +28,7 @@ A simple web application to manage equipment items.
    npm install
    node server.js
    ```
-   The backend server will run on `http://localhost:5000`.
+   The backend server will run on `http://localhost:5001`.
 
 3. **Frontend Setup**:
    Open a new terminal:
