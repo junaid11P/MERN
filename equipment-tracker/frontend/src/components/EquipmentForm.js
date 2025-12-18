@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 const EquipmentForm = ({ currentItem, onSave, onCancel }) => {
+    // Local state for the form fields
     const [formData, setFormData] = useState({
         name: '',
         type: 'Machine',
@@ -9,6 +10,7 @@ const EquipmentForm = ({ currentItem, onSave, onCancel }) => {
     });
     const [error, setError] = useState('');
 
+    // If we are editing (currentItem exists), fill the form
     useEffect(() => {
         if (currentItem) {
             setFormData({
@@ -18,6 +20,7 @@ const EquipmentForm = ({ currentItem, onSave, onCancel }) => {
                 lastCleanedDate: currentItem.lastCleanedDate ? currentItem.lastCleanedDate.split('T')[0] : ''
             });
         } else {
+            // Otherwise, reset to defaults
             setFormData({
                 name: '',
                 type: 'Machine',
@@ -36,6 +39,7 @@ const EquipmentForm = ({ currentItem, onSave, onCancel }) => {
         e.preventDefault();
         setError('');
 
+        // Simple validation
         if (!formData.name.trim()) {
             setError('Name is required');
             return;
