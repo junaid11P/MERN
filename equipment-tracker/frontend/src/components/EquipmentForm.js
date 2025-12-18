@@ -45,6 +45,16 @@ const EquipmentForm = ({ currentItem, onSave, onCancel }) => {
             return;
         }
 
+        if (!formData.lastCleanedDate) {
+            setError('Last Cleaned Date is required');
+            return;
+        }
+
+        if (new Date(formData.lastCleanedDate) > new Date()) {
+            setError('Date cannot be in the future');
+            return;
+        }
+
         onSave(formData);
     };
 
