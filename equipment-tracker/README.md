@@ -18,6 +18,12 @@ It's a simple web application to manage a list of equipment. I built this using 
 - **Backend**: Node.js, Express.js
 - **Database**: MongoDB (using Mongoose for schema validation)
 
+## Database Details
+
+If you are setting up your MongoDB Atlas, use these names:
+- **Database Name**: `equipment-tracker`
+- **Collection Name**: `equipment` (Created automatically by Mongoose)
+
 ## How to Run
 
 Follow these steps to get the project running on your local machine.
