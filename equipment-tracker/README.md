@@ -1,51 +1,80 @@
-# Equipment Tracker
+# Equipment Tracker 
 
-A simple web application to manage equipment items.
+Hi there! This is my submission for the Intern Assignment.
+
+It's a simple web application to manage a list of equipment. I built this using the **MERN Stack** (MongoDB, Express, React, Node.js).
 
 ## Features
-- View list of equipment.
-- Add new equipment.
-- Edit existing equipment.
-- Delete equipment.
-- Search equipment by name, type, or status.
-- Data persistence using a local JSON file.
+
+- **View Equipment**: See a clear table of all items.
+- **Add Items**: Easy form to add new machinery.
+- **Edit & Delete**: Manage existing records.
+- **Search**: Filter items by name, type, or status (Added this as a bonus!).
+- **Validation**: Ensures you don't submit empty forms.
 
 ## Tech Stack
-- **Frontend**: React
-- **Backend**: Node.js, Express
-- **Database**: MongoDB
 
-## Prerequisites
-- Node.js installed
+- **Frontend**: React (Hooks, Functional Components)
+- **Backend**: Node.js, Express.js
+- **Database**: MongoDB (using Mongoose for schema validation)
 
-## Setup & Run
+## How to Run
 
-1. **Clone the repository** (if applicable) or navigate to the project folder.
+Follow these steps to get the project running on your local machine.
 
-2. **Backend Setup**:
-   ```bash
-   cd backend
-   npm install
-   # Create a .env file with your MongoDB URI
-   echo "MONGO_URI=mongodb+srv://..." > .env
-   echo "PORT=5001" >> .env
-   node server.js
-   ```
-   The backend server will run on `http://localhost:5001`.
+### 1. Prerequisites
+Make sure you have **Node.js** installed.
 
-3. **Frontend Setup**:
-   Open a new terminal:
-   ```bash
-   cd frontend
-   npm install
-   npm start
-   ```
-   The application will open in your browser at `http://localhost:3000`.
+### 2. Backend Setup
+The backend runs on port `5001`.
+
+1.  Open a terminal and go to the `backend` folder:
+    ```bash
+    cd backend
+    ```
+2.  Install dependencies:
+    ```bash
+    npm install
+    ```
+3.  **Important**: Create a `.env` file in the `backend` folder with your MongoDB Atlas connection string:
+    ```env
+    MONGO_URI=mongodb+srv://<your_username>:<your_password>@cluster0.mongodb.net/equipment-tracker
+    PORT=5001
+    ```
+4.  Start the server:
+    ```bash
+    npm start
+    ```
+    You should see: `Server is running on port 5001` and `MongoDB connected`.
+
+### 3. Frontend Setup
+The frontend runs on port `3000`.
+
+1.  Open a **new** terminal (keep the backend running!) and go to the `frontend` folder:
+    ```bash
+    cd frontend
+    ```
+2.  Install dependencies:
+    ```bash
+    npm install
+    ```
+3.  Start the app:
+    ```bash
+    npm start
+    ```
+    The browser should open automatically at `http://localhost:3000`.
+
+## What I Learned
+
+Building this project helped me verify my understanding of:
+- **REST APIs**: How to structure routes properly.
+- **State Management**: Managing `loading` and `error` states in React.
+- **Database Design**: Using Mongoose schemas to enforce data types (like ensuring `status` is one of the allowed values).
 
 ## Assumptions
-- No authentication required.
 
-## Future Improvements
-- Add user authentication.
-- Add pagination for large datasets.
-- Add comprehensive error handling and logging.
+- I assumed we need a robust database, so I chose MongoDB over a local JSON file to better demonstrate backend skills.
+- The app is currently single-user (no login required).
+
+---
+*Thank you for checking out my code!*

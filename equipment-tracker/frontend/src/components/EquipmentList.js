@@ -1,6 +1,7 @@
 import React from 'react';
 import { format } from 'date-fns';
 
+// Simple table component to display the equipment
 const EquipmentList = ({ equipment, onEdit, onDelete }) => {
     return (
         <div className="equipment-list">

@@ -2,16 +2,16 @@ const express = require('express');
 const router = express.Router();
 const equipmentController = require('../controllers/equipmentController');
 
-// GET /api/equipment
+// GET all items
 router.get('/', equipmentController.getAllEquipment);
 
-// POST /api/equipment
+// POST new item
 router.post('/', equipmentController.createEquipment);
 
-// PUT /api/equipment/:id
+// PUT (update) item by ID
 router.put('/:id', equipmentController.updateEquipment);
 
-// DELETE /api/equipment/:id
+// DELETE item by ID
 router.delete('/:id', equipmentController.deleteEquipment);
 
 module.exports = router;

@@ -1,5 +1,7 @@
 const Equipment = require('../models/Equipment');
 
+// Get all equipment items
+// Using async/await because database calls are asynchronous
 exports.getAllEquipment = async (req, res) => {
     try {
         const equipment = await Equipment.find();
@@ -9,6 +11,7 @@ exports.getAllEquipment = async (req, res) => {
     }
 };
 
+// Add a new equipment item
 exports.createEquipment = async (req, res) => {
     const { name, type, status, lastCleanedDate } = req.body;
 
@@ -31,6 +34,7 @@ exports.createEquipment = async (req, res) => {
     }
 };
 
+// Update existing equipment by ID
 exports.updateEquipment = async (req, res) => {
     const { id } = req.params;
     const { name, type, status, lastCleanedDate } = req.body;
@@ -57,6 +61,7 @@ exports.updateEquipment = async (req, res) => {
     }
 };
 
+// Delete equipment by ID
 exports.deleteEquipment = async (req, res) => {
     const { id } = req.params;
 

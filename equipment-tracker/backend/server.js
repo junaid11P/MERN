@@ -1,19 +1,21 @@
+// Load environment variables from .env file
 require('dotenv').config();
 const express = require('express');
-const cors = require('cors');
+const cors = require('cors'); // Allow frontend to access backend
 const mongoose = require('mongoose');
 const equipmentRoutes = require('./routes/equipment');
 
 const app = express();
 const PORT = process.env.PORT || 5001;
 
-// Middleware
-app.use(cors());
-app.use(express.json());
+// Middleware to handle requests
+app.use(cors()); // Fixes CORS errors
+app.use(express.json()); // Parses incoming JSON data
 
-// Database Connection
+// Connect to MongoDB
+// ensure you have your .env file set up!
 mongoose.connect(process.env.MONGO_URI)
-    .then(() => console.log('MongoDB connected'))
+    .then(() => console.log('MongoDB connected successfully'))
     .catch(err => console.log('MongoDB connection error:', err));
 
 // Routes

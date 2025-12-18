@@ -4,18 +4,26 @@ import api from './services/api';
 import EquipmentList from './components/EquipmentList';
 import EquipmentForm from './components/EquipmentForm';
 
+
 function App() {
+  // Store equipment list
   const [equipment, setEquipment] = useState([]);
+
+  // Toggle between list view and form view
   const [view, setView] = useState('list'); // 'list' | 'form'
+
+  // Store the item currently being edited (null if adding new)
   const [currentItem, setCurrentItem] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
 
+  // Fetch data when the component loads
   useEffect(() => {
     fetchEquipment();
   }, []);
 
+  // Helper function to call the API
   const fetchEquipment = async () => {
     setLoading(true);
     try {
