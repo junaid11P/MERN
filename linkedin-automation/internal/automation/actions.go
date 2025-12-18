@@ -32,12 +32,56 @@ func (b *Bot) ConnectWithNote(profileUrl string, note string) error {
 
 	// If not found, try "More" -> "Connect"
 	// (Simplified logic for PoC)
+	// If not found, try "More" -> "Connect"
 	if connectBtn == nil {
 		logger.Warn("Connect button not found directly. Checking 'More' menu...")
-		// Assuming we might need to click "More"
-		// This is complex as selectors vary dynamically.
-		// For PoC, we return if direct connect isn't found to avoid breaking.
-		return nil
+
+		// Look for the "More actions" button.
+		// Common selectors: button[aria-label^='More actions'], or text "More"
+		moreBtn, err := page.Element("button[aria-label^='More actions']")
+		if err != nil {
+			// Try finding by text if aria-label fails
+			moreElements := page.MustElements("button")
+			for _, btn := range moreElements {
+				if txt, _ := btn.Text(); txt == "More" {
+					moreBtn = btn
+					break
+				}
+			}
+		}
+
+		if moreBtn != nil {
+			// Click "More"
+			logger.Info("Clicking 'More' button...")
+			stealth.RandomSleep(500*time.Millisecond, 1*time.Second)
+			moreBtn.MustClick()
+			stealth.RandomSleep(1*time.Second, 2*time.Second)
+
+			// Now look for "Connect" in the dropdown items
+			// Dropdown items are often div[role='button'] or similar.
+			// We search all elements containing text "Connect" that are visible.
+
+			// Get all elements with text "Connect"
+			if options, err := page.ElementsX("//span[text()='Connect'] | //div[text()='Connect']"); err == nil {
+				for _, opt := range options {
+					if opt.MustVisible() {
+						// Usually the clickable part is a parent div/button
+						// We can try clicking the element itself or its parent
+						connectBtn = opt
+						logger.Info("Found Connect option in dropdown")
+						break
+					}
+				}
+			} else {
+				// Fallback to searching all buttons/divs again if xpath fails or yields nothing useful
+				// This is a bit broader
+			}
+		}
+
+		if connectBtn == nil {
+			logger.Error("Connect button not found even after checking 'More' menu.")
+			return nil
+		}
 	}
 
 	logger.Info("Clicking Connect...")
