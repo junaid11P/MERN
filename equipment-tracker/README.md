@@ -13,7 +13,7 @@ A simple web application to manage equipment items.
 ## Tech Stack
 - **Frontend**: React
 - **Backend**: Node.js, Express
-- **Database**: local JSON file (`backend/data/equipment.json`)
+- **Database**: MongoDB
 
 ## Prerequisites
 - Node.js installed
@@ -26,6 +26,9 @@ A simple web application to manage equipment items.
    ```bash
    cd backend
    npm install
+   # Create a .env file with your MongoDB URI
+   echo "MONGO_URI=mongodb+srv://..." > .env
+   echo "PORT=5001" >> .env
    node server.js
    ```
    The backend server will run on `http://localhost:5001`.
@@ -41,11 +44,8 @@ A simple web application to manage equipment items.
 
 ## Assumptions
 - No authentication required.
-- Data is stored in a JSON file for simplicity and portability.
-- Single user environment (concurrent writes might race in JSON file implementation, but acceptable for this scope).
 
 ## Future Improvements
-- Add real database (MongoDB or PostgreSQL).
 - Add user authentication.
 - Add pagination for large datasets.
 - Add comprehensive error handling and logging.
