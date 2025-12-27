@@ -41,8 +41,16 @@ func Warn(v ...interface{}) {
 	warnLogger.Println(v...)
 }
 
+func Warnf(format string, v ...interface{}) {
+	warnLogger.Printf(format, v...)
+}
+
 func Error(v ...interface{}) {
 	errorLogger.Println(v...)
+}
+
+func Errorf(format string, v ...interface{}) {
+	errorLogger.Printf(format, v...)
 }
 
 func Fatal(v ...interface{}) {

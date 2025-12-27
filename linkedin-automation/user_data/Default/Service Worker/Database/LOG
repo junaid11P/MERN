@@ -1,3 +1,2 @@
-2025/12/16-11:30:38.771 8703 Reusing MANIFEST /Users/mac/Documents/GitHub/MERN/linkedin-automation/user_data/Default/Service Worker/Database/MANIFEST-000001
-2025/12/16-11:30:38.771 8703 Recovering log #3
-2025/12/16-11:30:38.771 8703 Reusing old log /Users/mac/Documents/GitHub/MERN/linkedin-automation/user_data/Default/Service Worker/Database/000003.log 
+2025/12/27-17:34:34.495 11103 Creating DB /Users/mac/Documents/GitHub/MERN/linkedin-automation/user_data/Default/Service Worker/Database since it was missing.
+2025/12/27-17:34:34.501 11103 Reusing MANIFEST /Users/mac/Documents/GitHub/MERN/linkedin-automation/user_data/Default/Service Worker/Database/MANIFEST-000001

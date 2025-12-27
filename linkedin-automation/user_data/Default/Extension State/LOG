@@ -1,3 +1,2 @@
-2025/12/16-11:30:39.425 11907 Reusing MANIFEST /Users/mac/Documents/GitHub/MERN/linkedin-automation/user_data/Default/Extension State/MANIFEST-000001
-2025/12/16-11:30:39.426 11907 Recovering log #3
-2025/12/16-11:30:39.426 11907 Reusing old log /Users/mac/Documents/GitHub/MERN/linkedin-automation/user_data/Default/Extension State/000003.log 
+2025/12/27-17:33:48.711 11707 Creating DB /Users/mac/Documents/GitHub/MERN/linkedin-automation/user_data/Default/Extension State since it was missing.
+2025/12/27-17:33:48.724 11707 Reusing MANIFEST /Users/mac/Documents/GitHub/MERN/linkedin-automation/user_data/Default/Extension State/MANIFEST-000001

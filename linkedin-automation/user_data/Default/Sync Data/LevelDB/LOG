@@ -1,3 +1,2 @@
-2025/12/16-11:30:38.768 b403 Reusing MANIFEST /Users/mac/Documents/GitHub/MERN/linkedin-automation/user_data/Default/Sync Data/LevelDB/MANIFEST-000001
-2025/12/16-11:30:38.770 b403 Recovering log #3
-2025/12/16-11:30:38.770 b403 Reusing old log /Users/mac/Documents/GitHub/MERN/linkedin-automation/user_data/Default/Sync Data/LevelDB/000003.log 
+2025/12/27-17:33:48.475 ef03 Creating DB /Users/mac/Documents/GitHub/MERN/linkedin-automation/user_data/Default/Sync Data/LevelDB since it was missing.
+2025/12/27-17:33:48.485 ef03 Reusing MANIFEST /Users/mac/Documents/GitHub/MERN/linkedin-automation/user_data/Default/Sync Data/LevelDB/MANIFEST-000001
