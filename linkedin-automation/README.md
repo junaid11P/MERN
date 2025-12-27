@@ -1,53 +1,50 @@
-# LinkedIn Automation Bot (Experimental)
+# LinkedIn Automation Engineering Proof-of-Concept
 
-Hi! This is my submission for the LinkedIn Automation assignment. It's a tool written in Go that automates connection requests and profile searching while trying to avoid bot detection.
+A sophisticated Go-based LinkedIn automation tool demonstrating advanced browser automation, anti-detection techniques, and human-like behavior simulation. Built with the `go-rod` library.
 
-> **Note**: This is strictly for educational purposes to demonstrate browser automation skills. Please don't use this on a real account you care about, as it violates LinkedIn's ToS.
+> [!IMPORTANT]
+> **Educational Purpose Only**: This project is for technical evaluation and demonstrating automation engineering skills. Automating LinkedIn violates their Terms of Service. Do not use this on live accounts.
 
-## Demo
+## Technical Demonstration: Stealth & Anti-Detection
 
-[Watch the demonstration video](https://drive.google.com/file/d/1Wdo7SBtn-ySSZ_iM17e8cdv41kPLJC5k/view?usp=drivesdk)
+This tool implements 8+ distinct stealth techniques to mimic authentic human behavior:
 
+1.  **Human-like Mouse Movement**: Uses Bézier curves with randomized control points, variable speed, and micro-corrections to avoid robotic straight-line trajectories.
+2.  **Realistic Typing Simulation**: Implements variable keystroke intervals and introduces/corrections occasional "typos" to simulate human typing rhythm.
+3.  **Randomized Timing Patterns**: Adds realistic, randomized "think time" and delays between actions.
+4.  **Browser Fingerprint Masking**: Injects `stealth.JS`, randomizes User-Agent strings, and hides the `navigator.webdriver` flag.
+5.  **Random Scrolling Behavior**: Simulates natural page reading with variable scroll speeds and pauses.
+6.  **Activity Scheduling**: Bot activity is restricted to business hours (9 AM - 5 PM, Mon-Fri) to mimic professional usage patterns. Can be bypassed via `BYPASS_SCHEDULER=true` for testing.
+7.  **Rate Limiting & Throttling**: Enforces daily quotas for connection requests and messages, tracked via persistent storage.
+8.  **Mouse Hovering**: Intelligent cursor positioning and hovering over elements before interaction.
 
-## How it Works
+## Architecture
 
-I built this using the `go-rod` library because it offers great control over the browser. The main challenge was simulating human behavior so the bot doesn't get blocked immediately.
+*   **Modular Design**: Clean separation between `automation`, `stealth`, `browser`, and `persistence` layers.
+*   **State Persistence**: Tracks activity in `user_data/storage.json` to prevent duplicates and enforce daily limits across sessions.
+*   **Robust Selectors**: Uses prioritized fallback selectors to handle LinkedIn's dynamic UI updates.
+*   **Structured Logging**: Detailed leveled logging for observability and debugging.
 
-### Key Features
-*   **Stealth Mode**: I used Bézier curves for mouse movements so the cursor doesn't just teleport or move in straight lines.
-*   **Human Typing**: The bot types with variable speed and sometimes makes "mistakes" (and corrects them) to look real.
-*   **Smart Waiting**: It doesn't just wait X seconds; it waits for random intervals to mimic "thinking" time.
+## Setup Instructions
 
-## Setup & Run
-
-1.  **Install Go**: Make sure you have Go installed (I used version 1.25).
-2.  **Get the code**:
-    ```bash
-    git clone <repo-url>
-    cd linkedin-automation
-    ```
-3.  **Config**:
-    Rename `.env.example` to `.env` and add your LinkedIn login details.
+1.  **Environment Setup**:
     ```bash
     cp .env.example .env
+    # Add your credentials and tune limits in .env
     ```
-4.  **Run it**:
+2.  **Build & Run**:
     ```bash
-    go build -o linkedin-bot cmd/linkedin-bot/main.go
-    ./linkedin-bot
+    go build -o main cmd/linkedin-bot/main.go
+    ./main
     ```
 
-## Project Structure
+## Features Demonstrated
 
-I tried to keep the code modular/clean:
+*   **Automated Login**: Handles session persistence and detects security checkpoints.
+*   **Targeted Search**: Keyword-based search with pagination support.
+*   **Connection Workflow**: Sends personalized connection notes with character limit awareness.
+*   **Messaging System**: Automatically follows up with newly accepted connections using dynamic templates.
 
-*   `cmd/`: Entry point.
-*   `internal/browser`: Handles the browser instance and stealth settings (User-Agent, etc.).
-*   `internal/stealth`: This is where the fun math happens for the mouse movements.
-*   `internal/automation`: Contains the actual logic for login, searching, and connecting.
+## Demonstration
 
-## A Note on Anti-Detection
-
-The hardest part was the mouse movement. I implemented a function in `mouse.go` that adds some "noise" to the path so it generates a curve rather than a line. I also disabled the standard `navigator.webdriver` flags so Chrome doesn't shout "I AM A ROBOT" to the website.
-
-Hope you like it!
+[Watch the Technical Walkthrough](https://drive.google.com/file/d/1Wdo7SBtn-ySSZ_iM17e8cdv41kPLJC5k/view?usp=drivesdk)

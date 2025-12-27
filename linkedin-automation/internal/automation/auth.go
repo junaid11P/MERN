@@ -7,6 +7,7 @@ import (
 
 	"github.com/go-rod/rod/lib/proto"
 	"github.com/junaid11P/MERN/linkedin-automation/internal/browser"
+	"github.com/junaid11P/MERN/linkedin-automation/internal/persistence"
 	"github.com/junaid11P/MERN/linkedin-automation/internal/stealth"
 	"github.com/junaid11P/MERN/linkedin-automation/pkg/config"
 	"github.com/junaid11P/MERN/linkedin-automation/pkg/logger"
@@ -15,12 +16,14 @@ import (
 type Bot struct {
 	Browser *browser.Browser
 	Config  *config.Config
+	Storage *persistence.Storage
 }
 
-func New(b *browser.Browser, cfg *config.Config) *Bot {
+func New(b *browser.Browser, cfg *config.Config, s *persistence.Storage) *Bot {
 	return &Bot{
 		Browser: b,
 		Config:  cfg,
+		Storage: s,
 	}
 }
 

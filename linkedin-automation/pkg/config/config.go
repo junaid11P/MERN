@@ -16,6 +16,7 @@ type Config struct {
 	HeadlessMode     bool
 	SlowMotion       time.Duration
 	UserDataDir      string
+	BypassScheduler  bool
 	RateLimits       RateLimits
 }
 
@@ -37,6 +38,7 @@ func LoadConfig() *Config {
 		HeadlessMode:     getEnvAsBool("HEADLESS_MODE", false),
 		SlowMotion:       time.Duration(getEnvAsInt("SLOW_MOTION_MS", 10)) * time.Millisecond,
 		UserDataDir:      getEnv("USER_DATA_DIR", "./user_data"),
+		BypassScheduler:  getEnvAsBool("BYPASS_SCHEDULER", false),
 		RateLimits: RateLimits{
 			MaxConnectsPerDay: getEnvAsInt("MAX_CONNECTS_PER_DAY", 20),
 			MaxMessagesPerDay: getEnvAsInt("MAX_MESSAGES_PER_DAY", 30),
