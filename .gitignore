@@ -1,0 +1,9 @@
+node_modules/
+dist/
+build/
+.DS_Store
+*.log
+.env
+.vscode/
+multi-window-viewer/node_modules/
+multi-window-viewer/backend/node_modules/
