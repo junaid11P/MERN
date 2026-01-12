@@ -48,16 +48,21 @@ document.addEventListener('DOMContentLoaded', () => {
         // 1. Try to fetch fresh proxies from GitHub Source
         try {
             // User requested specific commit for HTTPS list
+            console.log('Fetching proxies from GitHub...');
             const response = await fetch('https://raw.githubusercontent.com/iplocate/free-proxy-list/a7439879c7ff84ee2a71251d2f2d11b15b159713/protocols/https.txt');
+            console.log('Proxy fetch response status:', response.status);
+
             if (response.ok) {
                 const text = await response.text();
                 proxies = text.split(/[\n,]+/).map(p => p.trim()).filter(p => p);
-                console.log(`Fetched ${proxies.length} proxies from GitHub`);
+                console.log(`✅ Fetched ${proxies.length} proxies from GitHub`);
+                console.log('First 5 proxies:', proxies.slice(0, 5));
             } else {
-                console.error('GitHub fetch failed:', response.status);
+                console.error('❌ GitHub fetch failed:', response.status, response.statusText);
             }
         } catch (e) {
-            console.warn('Failed to fetch GitHub proxies, falling back to manual input', e);
+            console.error('❌ Failed to fetch GitHub proxies:', e);
+            console.warn('Falling back to manual input');
         }
 
         // 2. Fallback or Append Manual Input
@@ -187,11 +192,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 let proxyIP = '';
                 if (proxies.length > 0) {
                     proxyIP = proxies[i % proxies.length];
+                    console.log(`Window ${i}: Using proxy ${proxyIP}`);
                 }
 
                 // Route through backend proxy which now handles 'proxy' param
                 const target = encodeURIComponent(url);
-                iframe.src = `http://localhost:3000/proxy?url=${target}&proxy=${encodeURIComponent(proxyIP)}`;
+                // Use relative URL so it works in both dev and production
+                iframe.src = `/proxy?url=${target}&proxy=${encodeURIComponent(proxyIP)}`;
+
+                // Error handling
+                iframe.addEventListener('error', (e) => {
+                    console.error(`❌ Iframe ${i} failed to load:`, e);
+                });
 
                 wrapper.appendChild(iframe);
             }
