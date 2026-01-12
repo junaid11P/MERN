@@ -4,6 +4,39 @@ document.addEventListener('DOMContentLoaded', () => {
     const gridContainer = document.getElementById('gridContainer');
     const loader = document.getElementById('loader');
 
+    // Dashboard logging functions
+    const dashboard = {
+        show() {
+            const dash = document.getElementById('errorDashboard');
+            if (dash) dash.classList.remove('hidden');
+        },
+        logStatus(message) {
+            this.show();
+            const statusDiv = document.getElementById('statusInfo');
+            if (statusDiv) {
+                const time = new Date().toLocaleTimeString();
+                statusDiv.innerHTML += `<div>[${time}] ${message}</div>`;
+            }
+            console.log(message);
+        },
+        logError(message, error) {
+            this.show();
+            const errorDiv = document.getElementById('errorLog');
+            if (errorDiv) {
+                const time = new Date().toLocaleTimeString();
+                const errorMsg = error ? `${message}: ${error.message || error}` : message;
+                errorDiv.innerHTML += `<div>[${time}] ❌ ${errorMsg}</div>`;
+            }
+            console.error(message, error);
+        },
+        clear() {
+            const statusDiv = document.getElementById('statusInfo');
+            const errorDiv = document.getElementById('errorLog');
+            if (statusDiv) statusDiv.innerHTML = '';
+            if (errorDiv) errorDiv.innerHTML = '';
+        }
+    };
+
     launchBtn.addEventListener('click', () => {
         let url = urlInput.value.trim();
         const useProxy = document.getElementById('proxyCheck').checked;
@@ -36,8 +69,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function renderGrid(url, isYoutube) {
+        // Clear previous grid and dashboard
         gridContainer.innerHTML = '';
+        dashboard.clear();
         loader.classList.remove('hidden');
+
+        dashboard.logStatus(`🚀 Starting Multi-Window Viewer`);
+        dashboard.logStatus(`📺 URL: ${url}`);
+        dashboard.logStatus(`🎬 YouTube Mode: ${isYoutube ? 'Yes' : 'No'}`);
+
         await new Promise(resolve => setTimeout(resolve, 500));
 
         const totalFrames = parseInt(document.getElementById('gridSize').value) || 50;
@@ -48,40 +88,38 @@ document.addEventListener('DOMContentLoaded', () => {
         // 1. Try to fetch fresh proxies from GitHub Source
         try {
             // User requested specific commit for HTTPS list
-            console.log('Fetching proxies from GitHub...');
+            dashboard.logStatus('📡 Fetching proxies from GitHub...');
             const response = await fetch('https://raw.githubusercontent.com/iplocate/free-proxy-list/a7439879c7ff84ee2a71251d2f2d11b15b159713/protocols/https.txt');
-            console.log('Proxy fetch response status:', response.status);
+            dashboard.logStatus(`📡 Proxy fetch response: ${response.status}`);
 
             if (response.ok) {
                 const text = await response.text();
                 proxies = text.split(/[\n,]+/).map(p => p.trim()).filter(p => p);
-                console.log(`✅ Fetched ${proxies.length} proxies from GitHub`);
-                console.log('First 5 proxies:', proxies.slice(0, 5));
+                dashboard.logStatus(`✅ Fetched ${proxies.length} proxies from GitHub`);
+                dashboard.logStatus(`🔍 Sample proxies: ${proxies.slice(0, 3).join(', ')}`);
             } else {
-                console.error('❌ GitHub fetch failed:', response.status, response.statusText);
+                dashboard.logError(`GitHub fetch failed: ${response.status} ${response.statusText}`);
             }
         } catch (e) {
-            console.error('❌ Failed to fetch GitHub proxies:', e);
-            console.warn('Falling back to manual input');
+            dashboard.logError('Failed to fetch GitHub proxies', e);
         }
 
         // 2. Fallback or Append Manual Input
         const proxyText = document.getElementById('proxyList').value.trim();
         const manualProxies = proxyText ? proxyText.split(/[\n,]+/).map(p => p.trim()).filter(p => p) : [];
 
-        // If GitHub fetch failed or returned empty, use manual. 
-        // Or you could concat them: proxies = [...proxies, ...manualProxies];
-        if (proxies.length === 0) {
+        if (proxies.length === 0 && manualProxies.length > 0) {
             proxies = manualProxies;
+            dashboard.logStatus(`📝 Using ${proxies.length} manual proxies`);
         }
 
         loader.classList.add('hidden');
 
         // Detect environment
         const isElectron = window.electronAPI !== undefined;
-        console.log(`🖥️ Running in: ${isElectron ? 'ELECTRON' : 'BROWSER'} mode`);
-        console.log(`📊 Total frames to create: ${totalFrames}`);
-        console.log(`🌐 Proxies available: ${proxies.length}`);
+        dashboard.logStatus(`🖥️ Running in: ${isElectron ? 'ELECTRON' : 'BROWSER'} mode`);
+        dashboard.logStatus(`📊 Creating ${totalFrames} windows`);
+        dashboard.logStatus(`🌐 Proxies available: ${proxies.length}`);
 
         for (let i = 0; i < totalFrames; i++) {
             const wrapper = document.createElement('div');
@@ -198,7 +236,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 let proxyIP = '';
                 if (proxies.length > 0) {
                     proxyIP = proxies[i % proxies.length];
-                    console.log(`Window ${i}: Using proxy ${proxyIP}`);
                 }
 
                 // Route through backend proxy which now handles 'proxy' param
@@ -206,9 +243,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Use relative URL so it works in both dev and production
                 iframe.src = `/proxy?url=${target}&proxy=${encodeURIComponent(proxyIP)}`;
 
+                if (i === 0) {
+                    dashboard.logStatus(`🌐 Loading iframe with proxy: ${proxyIP || 'none'}`);
+                    dashboard.logStatus(`🔗 Proxy URL: /proxy?url=${url.substring(0, 50)}...`);
+                }
+
                 // Error handling
                 iframe.addEventListener('error', (e) => {
-                    console.error(`❌ Iframe ${i} failed to load:`, e);
+                    dashboard.logError(`Iframe ${i} failed to load`, e);
+                });
+
+                iframe.addEventListener('load', () => {
+                    if (i === 0) {
+                        dashboard.logStatus(`✅ First iframe loaded successfully`);
+                    }
                 });
 
                 wrapper.appendChild(iframe);

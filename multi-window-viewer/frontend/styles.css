@@ -324,3 +324,52 @@ input[type="checkbox"] {
 .controls {
     display: none;
 }
+
+/* Error Dashboard */
+.error-dashboard {
+    width: 100%;
+    max-width: 800px;
+    background: rgba(255, 59, 48, 0.1);
+    border: 1px solid rgba(255, 59, 48, 0.3);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    animation: fadeInUp 0.5s ease-out;
+}
+
+.error-dashboard h3 {
+    margin: 0 0 1rem 0;
+    color: #ff3b30;
+    font-size: 1.2rem;
+}
+
+.error-dashboard #statusInfo {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    font-family: monospace;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.error-dashboard #errorLog {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    font-family: monospace;
+    font-size: 0.85rem;
+    max-height: 300px;
+    overflow-y: auto;
+    color: #ff9500;
+}
+
+.error-dashboard #errorLog div {
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.error-dashboard #errorLog div:last-child {
+    border-bottom: none;
+}
