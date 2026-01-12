@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Window Viewer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <header>
+            <h1>Multi-Window Viewer</h1>
+            <p>Visualize any URL across 50 simultaneous screens</p>
+        </header>
+
+        <div class="controls-wrapper">
+            <div class="control-row main-row">
+                <input type="url" id="urlInput" placeholder="Enter website URL (e.g., https://example.com)"
+                    autocomplete="off">
+                <select id="gridSize" class="grid-select">
+                    <option value="50">50 Screens</option>
+                    <option value="10">10 Screens</option>
+                    <option value="25">25 Screens</option>
+                    <option value="100">100 Screens</option>
+                </select>
+                <button id="launchBtn">Open Screens</button>
+            </div>
+
+            <div class="control-row options-row">
+                <div class="proxy-option">
+                    <input type="checkbox" id="proxyCheck" checked> <!-- Auto-check for convenience -->
+                    <label for="proxyCheck">Unblock (Proxy)</label>
+                </div>
+                <textarea id="proxyList" class="proxy-input" placeholder="Paste Proxy List..." rows="1"
+                    spellcheck="false">
+</textarea>
+            </div>
+        </div>
+
+        <div id="loader" class="loader hidden"></div>
+
+        <div class="grid-container" id="gridContainer">
+            <!-- Iframes will be injected here -->
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

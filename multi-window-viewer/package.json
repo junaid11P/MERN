@@ -1,0 +1,29 @@
+{
+  "name": "multi-window-viewer",
+  "version": "1.0.0",
+  "description": "Multi-Window Viewer with Proxy Support",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "nodemon backend/server.js",
+    "electron": "electron main.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "axios": "^1.6.2",
+    "express-rate-limit": "^7.1.5",
+    "socks-proxy-agent": "^8.0.2",
+    "https-proxy-agent": "^7.0.2"
+  },
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "nodemon": "^3.0.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

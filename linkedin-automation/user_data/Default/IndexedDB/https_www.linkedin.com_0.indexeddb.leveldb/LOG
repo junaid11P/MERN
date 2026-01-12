@@ -1,2 +1,3 @@
-2025/12/27-17:34:23.529 f003 Creating DB /Users/mac/Documents/GitHub/MERN/linkedin-automation/user_data/Default/IndexedDB/https_www.linkedin.com_0.indexeddb.leveldb since it was missing.
-2025/12/27-17:34:23.542 f003 Reusing MANIFEST /Users/mac/Documents/GitHub/MERN/linkedin-automation/user_data/Default/IndexedDB/https_www.linkedin.com_0.indexeddb.leveldb/MANIFEST-000001
+2025/12/27-18:12:41.936 2710b Reusing MANIFEST /Users/mac/Documents/GitHub/MERN/linkedin-automation/user_data/Default/IndexedDB/https_www.linkedin.com_0.indexeddb.leveldb/MANIFEST-000001
+2025/12/27-18:12:41.936 2710b Recovering log #3
+2025/12/27-18:12:41.937 2710b Reusing old log /Users/mac/Documents/GitHub/MERN/linkedin-automation/user_data/Default/IndexedDB/https_www.linkedin.com_0.indexeddb.leveldb/000003.log 
