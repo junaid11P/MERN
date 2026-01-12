@@ -77,6 +77,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         loader.classList.add('hidden');
 
+        // Detect environment
+        const isElectron = window.electronAPI !== undefined;
+        console.log(`🖥️ Running in: ${isElectron ? 'ELECTRON' : 'BROWSER'} mode`);
+        console.log(`📊 Total frames to create: ${totalFrames}`);
+        console.log(`🌐 Proxies available: ${proxies.length}`);
+
         for (let i = 0; i < totalFrames; i++) {
             const wrapper = document.createElement('div');
             wrapper.className = 'iframe-wrapper';
