@@ -94,6 +94,8 @@ app.get('/proxy', async (req, res) => {
                  console.log('Backend Injected Automation Started');
                  Object.defineProperty(document, 'hidden', { get: () => false, configurable: true });
                  Object.defineProperty(document, 'visibilityState', { get: () => 'visible', configurable: true });
+
+                 // 1) Video & Ad Handling (keeps videos playing and mutes audio)
                  setInterval(() => {
                      const v = document.querySelector('video');
                      if(v) { 
@@ -106,6 +108,39 @@ app.get('/proxy', async (req, res) => {
                      const overlay = document.querySelector('.ytp-ad-overlay-close-button'); 
                      if(overlay) overlay.click();
                  }, 1000);
+
+                 // 2) Hide visible reCAPTCHA "Invalid domain for site key" messages and common widgets
+                 function hideRecaptchaErrors() {
+                     try {
+                         const re = /ERROR for site owner|Invalid domain for site key|invalid domain for site key/i;
+
+                         // Hide nodes whose text indicates the reCAPTCHA site key error
+                         document.querySelectorAll('div,span,p').forEach(el => {
+                             try {
+                                 if (el.innerText && re.test(el.innerText)) {
+                                     el.style.display = 'none';
+                                     el.setAttribute('data-copilot-hidden', '1');
+                                 }
+                             } catch (e) {}
+                         });
+
+                         // Hide known reCAPTCHA elements and badges
+                         document.querySelectorAll('.grecaptcha-badge, .g-recaptcha, iframe[src*="google.com/recaptcha"]').forEach(el => {
+                             try { el.style.display = 'none'; } catch (e) {}
+                         });
+
+                         // Hide small inline widgets inserted by grecaptcha
+                         document.querySelectorAll('[aria-label*="recaptcha"], [title*="reCAPTCHA"]').forEach(el => { try { el.style.display = 'none'; } catch(e){} });
+
+                     } catch (e) {
+                         console.warn('hideRecaptchaErrors failed', e);
+                     }
+                 }
+
+                 document.addEventListener('DOMContentLoaded', hideRecaptchaErrors);
+                 // Run repeatedly because widgets may be inserted later
+                 setInterval(hideRecaptchaErrors, 1500);
+
              })();
              </script>
          `;

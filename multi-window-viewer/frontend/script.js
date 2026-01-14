@@ -44,12 +44,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!url) return;
         if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
 
-        // Youtube Strategy: Use full watch URL to mimic human
+        // Youtube Strategy: Use embed URL to bypass reCAPTCHA
         const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/);
         let isYoutube = false;
         if (ytMatch && ytMatch[1]) {
             isYoutube = true;
-            url = `https://www.youtube.com/watch?v=${ytMatch[1]}`;
+            // Use embed URL which doesn't have reCAPTCHA restrictions
+            url = `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=1&mute=1&loop=1&playlist=${ytMatch[1]}`;
         }
 
         if (!validateURL(url)) {
